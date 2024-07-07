@@ -187,3 +187,109 @@ print(name)
 name = '\'Iven\''
 print(name)
 ```
+
+### 字符串拼接
+```python
+# 字符串字面量之间的拼接
+print("努力码代码的" + "Iven")
+# 字符串字面量和字符串变量的拼接
+name = "Iven"
+address = "Home"
+tel = 123456
+# * 字符串无法通过+连接非字符串拼接
+# // print("我是：" + name + ", 我的地址是" + address +"，我的号码是："  + tel)
+# 但可以用逗号隔开
+print("我是：" + name + ", 我的地址是" + address +"，我的号码是："  , tel)
+```
+
+### 字符串格式化
+```python
+class_num = 60
+avg_salary = 1244
+message = "一个班一共%s人，一个年级有%s名同学" % (class_num, avg_salary)
+print(message)
+
+name = "Iven"
+message = "我是%s" % name
+print(message)
+
+"""
+占位符
+%s 将内容转换成字符串
+# %d 将内容转换成整数
+# %f 将内容转换成浮点型
+"""
+
+name = "Iven"
+age = 21
+gpa = 3.59
+print("我的名字是:%s ,我的年龄为：%d岁, 我的GPA为:%f" % (name, age, gpa))
+```
+
+### 字符串格式化的精度控制
+```python
+
+# todo 地方 m.n m控制宽度，设置宽度小于数字自身宽度不生效 n控制小数点精度，四舍五入
+# e.g %5d 数字11  变为空格空格空格11，用三个空格补足宽度
+# e.g %7.2f 数字11.255  先补足宽度 再四舍五入 空格空格11.26
+
+num1 = 11
+num2 = 11.345
+print("数字11宽度限制5，结果为：%5d" % num1)
+print("数字11宽度限制1，结果为：%1d" % num1)
+print("数字11.345宽度限制7，小数精度2，结果为：%7.2f" % num2)
+print("数字11.345宽度不限制，小数精度2，结果为：%.2f" % num2)
+```
+
+### 字符串格式化的方式2
+```python
+
+# todo f"内容{变量}" 快速格式化 不做精度控制 原本输出 f:format
+name = "Iven"
+age = 21
+gpa = 3.99
+print(f"我叫{name}, 我的年龄是{age}, 我的GPA为{gpa}")
+```
+
+### 对表达式进行格式化
+```python
+# 表达式：一条具有明确执行结果的代码语句 1+1 2*2
+print("1 * 1的结果是:%d" % (1 * 1))
+print(f"1 * 1的结果是:{1 * 1}")
+print("字符串在Python的类型名是: %s" % type("字符串"))
+
+# 小练习
+name = "努力码代码的Iven"
+stock_price = 19.99
+stock_code = 1234567
+stock_price_daily_growth_factor = 1.2
+growth_days = 7
+print(f"公司:{name},股票代码:{stock_price},当前股价:{stock_price}")
+print("每日增长系数:%.1f. 经过%d天的增长后, 股价达到了: %.2f" % (stock_price_daily_growth_factor, growth_days, stock_price * stock_price_daily_growth_factor **growth_days))
+```
+
+### 数据输入(input语句)
+```python
+print("请告诉我你是谁？")
+name = input()
+print("我知道了，你是: %s" % name )
+
+# 提示语直接写入input
+name = input("请告诉我你是谁？\n")
+print("我知道了，你是: %s" % name )
+
+# input默认输入字符串 可用int转换
+num = input("你的银行卡密码是：\n")
+num = int(num)
+print("你的银行卡密码是：" , type(num))
+
+# 练习
+user_name = input("您的姓名是：")
+user_type = input("您的会员卡类型为：")
+print("您好：", user_name, "，您是尊贵的：", user_type, "用户，欢迎您的光临")
+print("您好：" + user_name + "，您是尊贵的：" +  user_type + "用户，欢迎您的光临")
+print(f"您好：{user_name}，您是尊贵的：{user_type}用户，欢迎您的光临")
+print("您好：%s，您是尊贵的：%s用户，欢迎您的光临" % (user_name, user_type))
+# 不能直接输出还没输入的语句~
+# // print(f"您好:{input("您的姓名是:")},您是尊贵的:{input("您的会员卡类型为:")}用户，欢迎您的光临")
+```
