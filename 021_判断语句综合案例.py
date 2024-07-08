@@ -16,3 +16,5 @@ else:
             print("猜错啦，猜的有点小")if(guess_num < num)else print("猜错啦，猜的有点大")
             print("Game Over")
 print("最终答案是：%d" % num)
+
+# 也可以用 else(if...else..)嵌套
