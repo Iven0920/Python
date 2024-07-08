@@ -437,3 +437,242 @@ else:
             print("Game Over")
 print("最终答案是：%d" % num)
 ```
+
+## 第四章
+### while循环的基础应用
+```python
+i = 0
+while i < 100:
+    print("Hello Iven")
+    i += 1
+
+# 练习1
+i = 1
+sum = 0
+while i <= 100:
+    sum += i
+    i += 1
+print(f"从1到100的和为：{sum}")
+
+# 练习2
+import random
+num = random.randint(1,100)
+guess_result = False
+final_guess_num = 0
+
+while guess_result == False:
+    final_guess_num += 1
+    guess_num = int(input("请输入你猜想的数字(1-100):"))
+    if guess_num == num:
+        print("恭喜你，猜对啦！")
+        guess_result = True
+    elif guess_num > num:
+        print("猜错啦，猜的有点大哦\n")
+    else:
+        print("猜错啦，猜的有点小哦\n")
+print(f"您一共猜了{final_guess_num}次")
+
+# 也可以是
+while guess_result == False:
+    final_guess_num += 1
+    guess_num = int(input("请输入你猜想的数字(1-100):"))
+    if guess_num == num:
+        print("恭喜你，猜对啦！")
+        guess_result = True
+    else:
+        if guess_num > num:
+            print("猜错啦，猜的有点大哦\n")
+        else:
+            print("猜错啦，猜的有点小哦\n")
+print(f"您一共猜了{final_guess_num}次")
+```
+
+### while循环的嵌套应用
+```python
+i = 1
+while i <= 100:
+    print(f"今天是第{i}天，准备表白......")
+
+    j = 1
+    while j <= 10:
+        print(f"送给小美第{j}只玫瑰花")
+        j += 1
+    
+    print("小美 我喜欢你！")
+    i += 1
+print(f"坚持到第{i - 1}天，表白成功！")
+
+# 要注意循环条件的设置，避免无限循环
+
+# * 补充知识 print输出不换行
+print("Hello")
+print("World")
+
+print("Hello", end='')
+print("World", end='')
+
+# * 补充知识 制表符\t 当空格使用 并与下一行对应部分进行对齐
+print("\n")
+print("Hello World!")
+print("Iven Starry")
+
+print("Hello\tWorld!")
+print("Iven\tStarry")
+
+# 练习 99乘法表
+row = 1
+
+while row <= 9:
+    i = 1
+    while i <= row:
+        print(f"{i}*{row}={i * row}\t", end='')
+        i += 1
+    # print空内容就是换行
+    print()
+    row += 1
+
+```
+
+### for循环的基础语法
+```python
+name = "Iven"
+
+# 临时变量x 待处理数据集name 理论上不可以无限循环
+for x in name:
+    print(x)
+
+# 练习
+name = "Iven enjoys the time of coding"
+num = 0
+for i in name:
+    if i == "n":
+        num += 1
+print(f"{name}中一共出现了{num}个n")
+```
+
+### range语句
+```python
+# for 待处理数据集 严格称之为序列类型 其内容可以一个个取出 包括 字符串 列表 元组
+
+# range(num) 从0开始到num 不含num
+for x in range(10):
+    print(f"{x}\t", end='')
+print()
+
+# range(num1, num2) 从num1开始到num2 不含num2
+for x in range(5, 10):
+    print(f"{x}\t", end='')
+print()
+
+# range(num1, num2, step) 从num1开始到num 不含num2 步长为step
+for x in range(5, 10, 2):
+    print(f"{x}\t", end='')
+print()
+
+# 练习
+num = 100
+count = 0
+for i in range(1, num):
+    if i % 2 == 0:
+        count += 1
+print(f"从1到{num}（不包含{num}）共有{count}个偶数")
+```
+
+### for循环的临时变量作用域
+```python
+# for循环外部不建议输出内部变量 不规范
+# //for i in range(5):
+# //    print(i)
+# // print(i)
+
+# 规范
+i = 0
+for i in range(5):
+    print(i)
+print(i)
+```
+
+### for循环的嵌套使用
+```python
+# 提前定义i 注意规范
+i = 0
+
+for i in range(1, 101):
+    print(f"今天是表白的第{i}天，加油坚持")
+    for j in range (1, 11):
+        print(f"给小美送的第{j}朵玫瑰花")
+print(f"第{i}天，表白成功！")
+
+# 练习
+for row in range(1,10):
+    for i in range(1, row+1):
+        print(f"{i}*{row}={i*row}\t",end='')
+    print()
+```
+
+### continue和break
+```python
+# continue 中断本次循环 进入下一次循环 用于while和for 只在所在循环执行下一次操作
+for i in range(1, 6):
+    print("Iven")
+    continue
+    print("Hello")
+
+for i in range(1, 6):
+    print("Iven")
+    for j in range(1, 6):
+        print("Hello")
+        continue
+        print("World!")
+    print("Handsome")
+
+# break 直接结束循环 用于while和for 只在所在循环结束
+for i in range(1, 10):
+    print("Iven")
+    break
+    print("Handsome")
+print("Good")
+
+for i in range(1, 5):
+    print("Iven")
+    for j in range(1, 5):
+        print("Hello")
+        break
+        print("World")
+    print("Handsome")
+print("Good")
+```
+
+### 循环综合案例
+```python
+# 发工资
+import random
+
+total_money = 10000
+
+for i in range(1, 21):
+    num = random.randint(1, 11)
+    if num < 5:
+        print(f"员工{i}，绩效分{num}，低于5，不发工资，下一位")
+        continue
+    else:
+        total_money -=1000
+        print(f"向员工{i}发放工资1000元，公司账户剩余{total_money}")
+    if total_money <= 0:
+        print("没钱啦，下个月再发")
+        break
+
+# 优化
+total_money = 10000
+for i in range(1, 21):
+    num = random.randint(1, 11)
+    if num < 5:
+        print(f"员工{i}，绩效分{num}，低于5，不发工资，下一位")
+        continue
+    if total_money >= 1000:
+        total_money -= 1000
+        print(f"向员工{i}发放工资1000元，公司账户剩余{total_money}")
+    else:
+        print(f"余额不足，公司账户剩余{total_money}，不足以发工资，不发了，下个月再来")
+        break
+```
