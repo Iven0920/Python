@@ -676,3 +676,435 @@ for i in range(1, 21):
         print(f"余额不足，公司账户剩余{total_money}，不足以发工资，不发了，下个月再来")
         break
 ```
+
+## 第五章
+### 函数的初体验
+```python
+# 统计字符串长度 不使用内置函数len()
+str1 = "Coding"
+str2 = "Iven"
+str3 = "surfing"
+
+count = 0
+for i in str1:
+    count += 1
+print(f"字符串长度为{count}")
+
+count = 0
+for i in str2:
+    count += 1
+print(f"字符串长度为{count}")
+
+count = 0
+for i in str3:
+    count += 1
+print(f"字符串长度为{count}")
+
+# 可以使用函数 已组织好的 可重复利用的 针对特定功能
+def my_len(data):
+    count = 0
+    for i in data:
+        count += 1
+    print(f"字符串长度为{count}")
+
+my_len(str1)
+my_len(str2)
+my_len(str3)
+
+```
+
+### 函数的基础定义语法
+```python
+# def 函数名(传入参数): 函数体 return ()必须要有
+
+def say_hi():
+    print("Hi 我是Iven")
+
+# 调用
+say_hi()
+
+# 练习
+def flag():
+    print("从0开始学Python")
+    print("Iven加油！")
+flag()
+```
+
+### 函数的传入参数
+```python
+"""
+函数定义时的x和y 形式参数 表示函数声明将要使用2个参数  
+实际调用中 5和6为实际参数 函数执行时实际使用的参数值
+"""
+
+def add(x, y):
+    z = x + y
+    print(f"{x} + {y} 的计算结果是：{z}")
+
+add(5, 6)
+
+# 练习
+def judge(age):
+    print("您好，", end='')
+    if age >= 18:
+        print("您已成年，需要购票！")
+    else:
+        print("您未成年，无需购票！")
+judge(int(input("欢迎来到游乐场，请输入您的年龄:")))
+```
+
+### 函数的返回值定义语法
+```python
+def add(x, y):
+    result = x + y
+    return result
+    print("这里不输出了")
+
+r = add(5, 6)
+```
+
+### 函数返回值之None类型
+```python
+# 无返回值的函数 返回None这个字面量
+def say_hi():
+    print("Hi")
+
+result = say_hi()
+print(f"无返回值函数，输出的值是{result}，输出值的类型为{type(result)}")
+
+# 主动返回
+def say_hi():
+    print("Hi")
+    return None
+result = say_hi()
+print(f"无返回值函数，输出的值是{result}，输出值的类型为{type(result)}")
+
+# 在if判断中，None等同于False
+def check_age(age):
+    if age > 18:
+        return "SUCCESS"
+    else:
+        return None
+result = check_age(16)
+# * 只有True才进入if
+if not result:
+    print("未成年不可以进入")
+
+# None用于声明无初始内容的变量
+name = None
+```
+
+### 函数说明文档
+```python
+def add(x, y):
+    """
+    函数说明add函数可以接收3个参数，进行2数相加的功能
+    :param x: 形参x表示相加的一个数字
+    :param y: 形参y表示相加的另一个数字
+    :return: 返回值是2数相加的结果
+    """
+    result = x + y
+    print(f"2数相加的结果是{result}")
+    return result
+
+add(5, 6)
+```
+
+### 函数的嵌套调用
+```python
+def func_b():
+    print("---2---")
+def func_a():
+    print("---1---")
+    func_b()
+    print("---3---")
+
+func_a()
+```
+
+### 变量在函数中的作用域
+```python
+# 变量作用域即变量作用范围 局部变量（在函数体内部临时保存数据 当函数调用完成后 销毁局部变量）和全局变量
+def test_a():
+    num = 100
+    print(num)
+test_a()
+# 出了函数体 局部变量无法使用
+# // print(num)
+
+# 全局变量
+num = 100
+def test_a():
+    print(num)
+test_a()
+def test_b():
+    print(num)
+test_b()
+
+# 在函数内修改全局变量
+num = 100
+def test_a():
+    print(num)
+test_a()
+def test_b():
+    num = 200 # 局部变量
+    print(num)
+test_b()
+print(num) # 外面的不修改
+
+# global关键字 在函数内部声明变量为全局变量
+num = 100
+def test_a():
+    print(num)
+test_a()
+def test_b():
+    global num
+    num = 200 # 全局变量
+    print(num)
+test_b()
+print(num) # 外面也修改了
+```
+
+### 函数综合案例
+```python
+money = 5000000
+name = input("请输入您的姓名：")
+
+def find_money(find_bool):
+    if find_bool == True:
+        print("--------------------查询余额--------------------")
+    print(f"{name}，您好，您的当前余额为：{money}")
+    main_menu(name)
+
+def save_money(num):
+    print("--------------------存款--------------------")
+    global money
+    money += num
+    print(f"{name}，您好，您已成功存款{num}元")
+    find_money(False)
+    main_menu(name)
+
+def pick_money(num):
+    print("--------------------取款--------------------")
+    global money
+    money -= num
+    print(f"{name}，您好，您已成功取款{num}元")
+    find_money(False)
+    main_menu(name)
+
+def main_menu(name):
+    print("--------------------主菜单--------------------")
+    print(f"{name}，您好，欢迎来到银行ATM。请选择操作：")
+    # 一个\t对不齐 就要两个
+    print("查询余额\t[输入1]")
+    print("存款\t\t[输入2]")
+    print("取款\t\t[输入3]")
+    print("退出\t\t[输入4]")
+
+    choice = int(input("请输入您的选择："))
+    if choice == 1:
+        find_money(True)
+    elif choice == 2:
+        num = int(input("请输入您要存入的金钱数额："))
+        save_money(num)
+    elif choice == 3:
+        num = int(input("请输入您要取出的金钱数额："))
+        pick_money(num)
+    else:
+        exit()
+
+main_menu(name)
+
+# 另一种思路 
+money = 5000000
+name = input("请输入您的姓名：")
+
+def find_money(find_bool):
+    if find_bool == True:
+        print("--------------------查询余额--------------------")
+    print(f"{name}，您好，您的当前余额为：{money}")
+
+def save_money(num):
+    print("--------------------存款--------------------")
+    global money
+    money += num
+    print(f"{name}，您好，您已成功存款{num}元")
+    find_money(False)
+
+def pick_money(num):
+    print("--------------------取款--------------------")
+    global money
+    money -= num
+    print(f"{name}，您好，您已成功取款{num}元")
+    find_money(False)
+
+def main_menu(name):
+    print("--------------------主菜单--------------------")
+    print(f"{name}，您好，欢迎来到银行ATM。请选择操作：")
+    # 一个\t对不齐 就要两个
+    print("查询余额\t[输入1]")
+    print("存款\t\t[输入2]")
+    print("取款\t\t[输入3]")
+    print("退出\t\t[输入4]")
+    return input("请输入您的选择：")
+
+while True:
+    keyboard_input = main_menu(name)
+    if keyboard_input == "1":
+        find_money(True)
+        continue
+    elif keyboard_input == "2":
+        num = int(input("请输入您要存入的金钱数额："))
+        save_money(num)
+        continue
+    elif keyboard_input == "3":
+        num = int(input("请输入您要取出的金钱数额："))
+        pick_money(num)
+        continue
+    else:
+        print("程序退出")
+        break
+```
+
+## 第六章
+### 数据容器入门
+```python
+# 一种可以容纳多份数据的Python数据类型
+# 五类：列表 元组 字符串 集合 字典
+```
+
+### 列表的定义语法
+```python
+name_list = ['Iven', 'coding', 'python']
+print(name_list)
+print(type(name_list))
+
+# * 十进制数字开头不允许为0   0o八进制 0b二进制 0x16进制
+my_list = ['Iven', 920, True]
+print(my_list)
+print(type(my_list))
+
+num_list = [[1, 2, 3], [4, 5, 6]]
+print(num_list)
+print(type(num_list))
+
+# 定义空列表
+# 变量名称 = []
+# 变量名称 = list()
+```
+
+### 列表的下标索引
+```python
+my_list = ['Iven', "coding", "python"]
+# 正向索引 0 1 2 
+print(my_list[0])
+print(my_list[1])
+print(my_list[2])
+# * 反向索引 -3 -2 -1
+print(my_list[-1])
+print(my_list[-2])
+print(my_list[-3])
+
+num_list = [[1, 2, 3], [4, 5, 6]]
+print(num_list[1][1])
+```
+
+### 列表的常用操作方法
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407082313022.png)
+```python
+# 1.查询某元素的列表下标 列表.index(元素) index就是列表对象（变量）内置的方法（函数）
+my_list = ['Iven', 'coding', 'python']
+index = my_list.index('Iven')
+print(f"Iven在列表的下标索引值为:{index}")
+
+# 2.修改特定下标的元素值
+my_list[0] = 'Ivennn'
+print(f"列表被修改元素值后，结果为{my_list}")
+
+# 3.插入元组 insert
+my_list.insert(1, 'handsome')
+print(f"列表插入元素后，结果为{my_list}")
+
+# 4.追加元素 append extend
+my_list.append("surfing")
+print(f"列表追加元素后，结果为{my_list}")
+
+my_list_new = ['good', 'perfect']
+my_list.extend(my_list_new)
+print(f"列表追加一个新的列表后，结果为{my_list}")
+
+# 5.删除元素 del .pop() 
+del my_list[1]
+print(f"列表删除一个元素后，结果为{my_list}")
+
+delete_element = my_list.pop(2)
+print(f"列表删除一个元素后，结果为{my_list},删除的元素是{delete_element}")
+
+# 6.删除某元素的第一个匹配项 remove()
+my_list = [1, 2, 3, 2, 1]
+my_list.remove(2)
+print(my_list)
+
+# 7.整个列表清空 clear()
+my_list.clear()
+print(my_list)
+
+# 8.统计列表内某元素的数量 count()
+my_list = [1, 2, 3, 2, 1]
+count = my_list.count(2)
+print(f"2的个数为：{count}")
+
+# 9，统计列表的全部元素数量
+my_list = [1, 2, 3, 2, 1]
+count = len(my_list)
+print(f"列表元素的个数为：{count}")
+
+# 练习
+age_list = [21, 25, 21, 23, 22, 20]
+age_list.append(31)
+age_list_extend = [29, 33, 30]
+age_list.extend(age_list_extend)
+element1 = age_list[0]
+print("取出的第一个元素为：%d" % element1)
+element2 = age_list[-1]
+print("取出的最后一个元素为：%d" % element2)
+index = age_list.index(31)
+print("元素31的下标位置为：%d" % index)
+print(f"最终列表为：{age_list}")
+```
+
+### 列表的循环遍历
+```python
+list = [1, 2, 3, 4, 5]
+def list_while():
+    index = 0
+    while index < len(list):
+        print(f"取出{list[index]}")
+        index += 1
+list_while()
+
+def list_for():
+    for index in range(len(list)):
+        print(f"取出{list[index]}")
+    for element in list:
+        print(f"取出{element}")
+list_for()
+
+# 练习
+num_list = [1, 2, 3, 4, 5, 6, 7, 8, 9 ,10]
+new_list = []
+count = 0
+while count < len(num_list):
+    if num_list[count] % 2 ==0:
+        new_list.append(num_list[count])
+    count += 1
+print(f"新的列表对象中的元素有{new_list}")
+
+num_list = [1, 2, 3, 4, 5, 6, 7, 8, 9 ,10]
+new_list = []
+count = 0
+for element in num_list:
+    if element % 2 ==0:
+        new_list.append(element)
+print(f"新的列表对象中的元素有{new_list}")
+```
