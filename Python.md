@@ -1108,3 +1108,433 @@ for element in num_list:
         new_list.append(element)
 print(f"新的列表对象中的元素有{new_list}")
 ```
+### 元组的定义和操作
+```python
+# 元组 同列表一样但元素不可被修改
+# // t0 = (1, 2, 3, 3 , 5, 6)
+# // t0[0] = 4
+# // print(t0)
+# * 特例 元组里的list是可以修改的
+t0 = ([1, 2, 3], 3 , 5, 6)
+t0[0][2] = 4
+print(t0)
+
+# 空元组
+# 变量名称 = ()
+# 变量名称 = tuple()
+
+t1 = (1, "Iven", True)
+t2 = ()
+t3 = tuple()
+print(f"tuple1的类型是：{type(t1)}，内容为:{t1}")
+print(f"tuple2的类型是：{type(t2)}，内容为:{t2}")
+print(f"tuple3的类型是：{type(t3)}，内容为:{t3}")
+
+# 定义单个元素的元组 注意逗号
+t4 = ("Iven", )
+str = ("Iven")
+print(f"tuple4的类型是：{type(t4)}，内容为:{t4}")
+print(f"str的类型是：{type(str)}，内容为:{str}")
+
+# 元组的嵌套
+t5 = ((1, 2, 3,), (2, 3, 4))
+print(f"tuple5的类型是：{type(t5)}，内容为:{t5}")
+
+# 通过下标索引取出内容
+num = t5[1][2]
+print(f"从嵌套元组取出了：{num}")
+
+# 元组相关操作
+# 1.index
+t6 = ("Iven", "Python", "handsome")
+index = t6.index("Python")
+print(f"元素Python的索引为{index}")
+# 2.count
+t7 = (1, 2, 3, 4, 5, 4, 3, 2, 1)
+num = t7.count(1)
+print(f"元素1的个数为{num}")
+# 3.len
+t8 = (1, 2, 3, 4, 5, 4, 3, 2, 1)
+num = len(t8)
+print(f"元组8的元素个数为{num}")
+
+# 元组遍历
+# while
+index = 0
+while index < len(t8):
+    print(f"元组的元素有：{t8[index]}")
+    index += 1
+# for
+for element in t8:
+    print(f"元组的元素有：{element}")
+
+# 练习
+t9 = ('Iven', 18, ['football', 'music'])
+age_index = t9.index(18)
+name = t9[0]
+del t9[2][0]
+t9[2].append('coding')
+print(f"年龄的下标索引为：{age_index}")
+print(f"学生姓名为：{name}")
+print(f"删除和增加后元组元素：{t9}")
+```
+
+# 字符串的定义和操作
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407091144825.png)
+```python
+my_str = "Iven enjoys surfing"
+value = my_str[2]
+print(f"取下标为2的元素是:{value}")
+value = my_str[-17]
+print(f"取下标为-17的元素是:{value}")
+
+# 跟元组一样，字符串是一个无法修改的数据容器
+# // my_str[2] = 'h'
+
+# index
+print(f"字符串中的enjoys的起始下标索引是{my_str.index('enjoys')}")
+
+# replace(1, 2) 字符串替换  并不是修改字符串本身，而是得到了新的字符串，所以必须要重新定义 1被替换的 2替换的
+new_str = my_str.replace('Iven', 'Rosennn')
+print(f"源字符串还是：{my_str}")
+print(f"新的字符串是：{new_str}")
+my_str = my_str.replace('Iven', 'Rosennn')
+print(f"也可以覆盖自己：{my_str}")
+
+# split 字符串分割  字符串本身不变 得到了一个列表对象
+# 按空格进行切分
+split_str = my_str.split(" ")
+print(f"字符串分割：{split_str}，类型为{type(split_str)}")
+
+# strip 去除前后空格strip() 去除指定字符串strip("字符串")
+my_str = "   Iven enjoys surfing   "
+print(my_str.strip())
+my_str = "12Iven enjoys surfing21"
+# * 只对字符串的开头或结尾生效 若被去除的字符在中间 则不生效 可用replace
+new_my_str = my_str.strip('n')
+print("n不在两头：", new_my_str)
+new_my_str = my_str.strip('12')
+print("12在两头：", new_my_str)
+
+# count 字符串中某字符串出现次数
+print(f"n出现的次数是{my_str.count('n')}")
+
+# len 字符串长度
+print(f"字符串长度{len(my_str)}")
+
+#  练习
+lian_xi_str = "rosenn likes rose"
+# 引号嵌套注意用不同的引号类型
+print(f"字符串中共有{lian_xi_str.count('rose')}个rose")
+lian_xi_str = lian_xi_str.replace(' ', '|')
+print("替换后的字符串：", lian_xi_str)
+lian_xi_str = lian_xi_str.split('|')
+print(f'分割字符串后得到的列表为{lian_xi_str}' )
+```
+
+### 数据容器(序列)的切片
+```python
+# 序列：内容连续、有序。有下标索引，字符串、元组、列表
+# 常用操作：切片 序列[起始下标:结束下标:步长]（不包含结束下标的元素） 步长为负数，起始和结束也应反向标记
+# list
+my_list = [0, 1, 2, 3, 4, 5, 6]
+print(f"my_list切片为：{my_list[1:4]}")
+
+# tuple
+my_tuple = (0, 1, 2, 3, 4, 5, 6)
+print(f"my_tuple切片为：{my_tuple[:]}")
+
+# str
+my_str = "0123456"
+print(f"my_str切片为：{my_str[::2]}")
+
+# 反向list
+my_list = [0, 1, 2, 3, 4, 5, 6]
+print(f"my_list切片为：{my_list[3:1:-1]}")
+
+# 反向tuple
+my_tuple = (0, 1, 2, 3, 4, 5, 6)
+print(f"my_tuple切片为：{my_tuple[::-2]}")
+
+# 反向str 序列翻转
+my_str = "0123456"
+print(f"my_str切片为：{my_str[::-1]}")
+
+# 练习
+lian_xi_str = '油加,nohtyP习学力努要,nevI'
+str_piece = lian_xi_str[::-1]
+str_split = str_piece.split(',')
+result = str_split[1].replace('要努力学习', '')
+print(f"字符串变换历程:\n{lian_xi_str}\n{str_piece}\n{str_split}\n{result}")
+```
+
+### 集合的定义和操作
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407092245561.png)
+```python
+# 集合 自动去重 元素不可重复 顺序不确定无序  不支持下标索引{} 空集合 变量名称=set()
+my_set = {'Iven', 'Python', 'work', 'happy', 'Iven', 'Python', 'work', 'happy'}
+my_set_empty = set()
+print(f'my_set的内容是{my_set}，类型是{type(my_set)}')
+print(f'my_set_empty的内容是{my_set_empty}，类型是{type(my_set_empty)}')
+
+# add 添加新元素
+my_set.add('handsome')
+my_set.add('Iven')
+print(f'my_set添加内容后的内容是{my_set}，类型是{type(my_set)}')
+
+# remove 移除元素
+my_set.remove('happy')
+print(f'my_set删除happy后的内容是{my_set}，类型是{type(my_set)}')
+
+# pop 取出、删除元素 随机
+element = my_set.pop()
+print(f'my_set取出的元素是{element}，取出后集合为{my_set}')
+
+# clear 清空集合
+my_set.clear()
+print(f'清空后集合为{my_set}')
+
+# 1.difference(2) 取出集合1和集合2的差集 1有2没有 
+set1 = {1, 2, 3}
+set2 = {1, 4, 5}
+set3 = set1.difference(set2)
+print(f'set1的内容是{set1}')
+print(f'set2的内容是{set2}')
+print(f'set3的内容是{set3}')
+
+# 1.difference_update(2) 消除2个集合的差集 在1上删除和2一样的元素
+set1 = {1, 2, 3}
+set2 = {1, 4, 5}
+print(f'set1的内容是{set1}')
+print(f'set2的内容是{set2}')
+set1.difference_update(set2)
+print(f'更新后set1的内容是{set1}')
+
+# 1.union(2) 合并新集合
+set1 = {1, 2, 3}
+set2 = {1, 4, 5}
+print(f'set1的内容是{set1}')
+print(f'set2的内容是{set2}')
+set3 = set1.union(set2)
+print(f'合并后set3的内容是{set3}')
+
+# len 统计元素数量
+set1 = {1, 2, 3}
+print(f'set1的内容是{set1},数量是{len(set1)}')
+
+# 遍历
+# * 没有下标索引 不支持while
+for element in set1:
+    print(element)
+
+# 练习
+my_list = ['Iven', 'Python', 'work', 'student', '程序员', 'student', '程序员']
+my_set = set()
+for element in my_list:
+    my_set.add(element)
+
+print(f"有列表：{my_list}")
+print(f"去重后的集合对象为：{my_set}")
+```
+
+### 字典的定义
+```python
+# 字典 key:value 键:值 不可以使用下标索引 不可以有两个相同key 后面的会覆盖前面的 
+my_dict = {'Iven':99, 'rosenn':93, 'Starry':89}
+my_dict_1 = {'Iven':99, 'Iven':66, 'rosenn':93, 'Starry':89}
+
+# 空字典 变量名称 = {} 变量名称 = dict()
+my_dict_2 = {}
+my_dict_3 = dict()
+print(f"字典1的内容：{my_dict}，类型为：{type(my_dict)}")
+print(f"两个Iven key字典1的内容：{my_dict_1}")
+print(f"字典2的内容：{my_dict_2}，类型为：{type(my_dict_2)}")
+print(f"字典3的内容：{my_dict_3}，类型为：{type(my_dict_3)}")
+
+# 取value
+print(f"Iven的考试分数为：{my_dict['Iven']}")
+
+# 字典嵌套 key（不可为字典）其他数据类型都可 value任意
+qian_tao_dict = {
+    'Iven':{
+    '语文':99, 
+    '数学':98, 
+    '英语':97}, 
+    'rosen':{
+    '语文':94, 
+    '数学':91, 
+    '英语':84},
+    'Starry':{
+    '语文':79,
+    '数学':94, 
+    '英语':91}
+    }
+print(qian_tao_dict)
+print(f"Iven的数学分数为:{qian_tao_dict['Iven']['数学']}")
+```
+### 字典的常用操作
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407092333415.png)
+```python
+# dict[key] = value 新增/更新元素
+my_dict = {'Iven':99, 'rosenn':93, 'Starry':89}
+my_dict['Bob'] = 95
+print(f"新增后的字典为:{my_dict}")
+my_dict['Bob'] = 90
+print(f"更新后的字典为:{my_dict}")
+
+# pop(key) 删除元素
+score = my_dict.pop('Bob')
+print(f"删除后的字典为:{my_dict}，他的成绩是{score}")
+
+# clear 清空元素
+my_dict.clear()
+print(f"清空后的字典为:{my_dict}")
+
+# dict.keys() 得到字典全部key
+my_dict = {'Iven':99, 'rosenn':93, 'Starry':89}
+keys = my_dict.keys()
+print(f'字典中全部key值：{keys}')
+
+# 遍历
+# 下面二者效果完全相同 都是取key 不支持下标索引不能用while
+for key in keys:
+    print(f'字典的key是:{key}')
+    print(f'对应的value是：{my_dict[key]}')
+
+for key in my_dict:
+    print(f'字典的key是:{key}')
+    print(f'对应的value是：{my_dict[key]}')
+
+# len 统计元素数量
+print(f"元素数量：{len(my_dict)}")
+
+# 练习
+practice_dict = {
+    'Iven':{
+        '部门':'科技部',
+        '工资':3000,
+        '级别':1
+    }, 
+    'Rosen':{
+        '部门':'市场部', 
+        '工资':5000, 
+        '级别':2
+    },
+    'Starry':{
+    '部门':'市场部', 
+    '工资':7000, 
+    '级别':3
+    },
+    'Alen':{
+    '部门':'科技部', 
+    '工资':4000, 
+    '级别':1},
+    'Bob':{
+    '部门':'市场部', 
+    '工资':6000, 
+    '级别':2
+    }
+    }
+print(f'当前员工信息如下：\n{practice_dict}')
+for name in practice_dict:
+    if practice_dict[name]['级别'] == 1:
+        practice_dict[name]['工资'] += 1000
+        practice_dict[name]['级别'] += 1
+print(f'所有级别为1的员工升职加薪后，员工信息如下：\n{practice_dict}')
+```
+### 五类数据容器的对比
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407092345579.png)
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407092346918.png)
+
+### 数据容器的通用操作
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407100012775.png)
+```python
+# 1.遍历 for while
+
+# 2.统计
+list1 = [1, 2, 3, 4, 5]
+tuple1 = (1, 2, 3, 4, 5)
+str1 = "Iven likes apple"
+set1 = {1, 2, 3, 4, 5}
+dict1 = {'Iven':99, 'rosenn':93, 'Starry':89}
+# len 元素个数
+print(f"列表 元素个数：{len(list1)}")
+print(f"元组 元素个数：{len(tuple1)}")
+print(f"字符串 元素个数：{len(str1)}")
+print(f"集合 元素个数：{len(set1)}")
+print(f"字典 元素个数：{len(dict1)}")
+
+# max 最大元素
+print(f"列表 最大元素：{max(list1)}")
+print(f"元组 最大元素：{max(tuple1)}")
+print(f"字符串 最大元素：{max(str1)}")
+print(f"集合 最大元素：{max(set1)}")
+print(f"字典 最大元素：{max(dict1)}")
+
+# min 最小元素
+print(f"列表 最小元素：{min(list1)}")
+print(f"元组 最小元素：{min(tuple1)}")
+print(f"字符串 最小元素：{min(str1)}")
+print(f"集合 最小元素：{min(set1)}")
+print(f"字典 最小元素：{min(dict1)}")
+
+# 3.容器转换功能 
+# 转列表
+print(f"列表 转列表：{list(list1)}")
+print(f"元组 转列表：{list(tuple1)}")
+print(f"字符串 转列表：{list(str1)}")
+print(f"集合 转列表：{list(set1)}")
+print(f"字典 转列表：{list(dict1)}")
+
+# 转元组
+print(f"列表 转元组：{tuple(list1)}")
+print(f"元组 转元组：{tuple(tuple1)}")
+print(f"字符串 转元组：{tuple(str1)}")
+print(f"集合 转元组：{tuple(set1)}")
+print(f"字典 转元组：{tuple(dict1)}")
+
+# 转字符串
+print(f"列表 转字符串：{str(list1)}")
+print(f"元组 转字符串：{str(tuple1)}")
+print(f"字符串 转字符串：{str(str1)}")
+print(f"集合 转字符串：{str(set1)}")
+print(f"字典 转字符串：{str(dict1)}")
+
+# 转集合
+print(f"列表 转集合：{set(list1)}")
+print(f"元组 转集合：{set(tuple1)}")
+print(f"字符串 转集合：{set(str1)}")
+print(f"集合 转集合：{set(set1)}")
+print(f"字典 转集合：{set(dict1)}")
+
+# 没有键值对 无法转字典
+
+# 4.容器排序 sorted(容器,reverse=True) 排序结果放在列表对象中
+list1 = [71, 22, 63, 74, 15]
+tuple1 = (71, 2, 533, 64, 15)
+str1 = "Iven likes apple"
+set1 = {12, 42, 37, 49, 15}
+dict1 = {'Iven':99, 'rosenn':93, 'Starry':89}
+
+print(f"列表 排序：{sorted(list1)}")
+print(f"元组 排序：{sorted(tuple1)}")
+print(f"字符串 排序：{sorted(str1)}")
+print(f"集合 排序：{sorted(set1)}")
+print(f"字典 排序：{sorted(dict1)}")
+
+print(f"列表 反向排序：{sorted(list1, reverse=True)}")
+print(f"元组 反向排序：{sorted(tuple1, reverse=True)}")
+print(f"字符串 反向排序：{sorted(str1, reverse=True)}")
+print(f"集合 反向排序：{sorted(set1, reverse=True)}")
+print(f"字典 反向排序：{sorted(dict1, reverse=True)}")
+```
+
+### 字符串大小比较的方式
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407100014646.png)
+```python
+# 字符串按位比较 abd > abc ab > a  a > A K2 > K1 
+print(f"abd大于abc，结果：{'abd' > 'abc'}")
+print(f"ab大于a，结果：{'ab' > 'a'}")
+print(f"a大于A，结果：{'a' > 'A'}")
+print(f"K2大于K1，结果：{'K2' > 'K1'}")
+```
