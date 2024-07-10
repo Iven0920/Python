@@ -22,7 +22,7 @@ print(f"也可以覆盖自己：{my_str}")
 split_str = my_str.split(" ")
 print(f"字符串分割：{split_str}，类型为{type(split_str)}")
 
-# strip 去除前后空格strip() 去除指定字符串strip("字符串")
+# strip 去除前后空格以及换行符 去除指定字符串strip("字符串")
 my_str = "   Iven enjoys surfing   "
 print(my_str.strip())
 my_str = "12Iven enjoys surfing21"
