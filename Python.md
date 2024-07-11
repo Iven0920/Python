@@ -1765,3 +1765,316 @@ print(f"备份好的数据为：\n{f_w.read()}")
 f_r.close()
 f_w.close()
 ```
+
+## 第九章
+### 了解异常
+```python
+# 异常bug：程序运行的过程中出现了错误
+f = open("/abc.txt", "r", encoding="UTF-8")
+# 发生异常: FileNotFoundError
+# [Errno 2] No such file or directory: '/abc.txt'
+#   File "D:\桌面\Coding\Python\060_了解异常.py", line 2, in <module>
+#     f = open("/abc.txt", "r", encoding="UTF-8")
+#         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+# FileNotFoundError: [Errno 2] No such file or directory: '/abc.txt'
+```
+
+### 异常的捕获
+```python
+# 捕获异常：提前假设某处出现异常，做好提前准备，当真的出现异常，可以有后续手段
+# 基本捕获异常方法 try... except 捕获所有异常
+try:
+    f = open("related_data/error.txt", "r", encoding="UTF-8")
+except:
+    print("出现异常了，文件不存在，将以w模式打开，自动创建文件")
+    f = open("related_data/error.txt", "w", encoding="UTF-8")
+
+# 捕获指定异常  
+try:
+    # print(name)
+    1 / 0
+except NameError as e:
+    print("出现了变量未定义的异常")
+    print(e)
+
+# 捕获多个异常
+try:
+    print(1 / 0)
+    # print(name)
+except (NameError, ZeroDivisionError) as e:
+    print("ZeroDivision错误")
+
+# 捕获所有异常 Exception 也可以直接用最基本的异常
+try:
+    # print(name)
+    1 / 0
+    # f = open("related_data/all_error.txt", "r", encoding="UTF-8")
+except Exception as e:
+    print("出现异常了")
+
+# 异常else 没有异常执行 可选
+try:
+    # print(name)
+    # 1 / 0
+    # f = open("related_data/all_error.txt", "r", encoding="UTF-8")
+    print("hello")
+except Exception as e:
+    print("出现异常了")
+else:
+    print("没有异常！")
+
+# 异常finally 无论是否异常都执行 可选
+try:
+    f = open("related_data/error.txt", "r", encoding="UTF-8")
+except Exception as e:
+    print("出现异常了")
+    f = open("related_data/error.txt", "w", encoding="UTF-8")
+else:
+    print("没有异常！")
+finally:
+    print("我是finally，有没有异常我都要执行")
+    f.close()
+```
+
+### 异常的传递性
+```python
+def func1():
+    print("func1开始")
+    num = 1 /0
+    print("func1开始")
+
+def func2():
+    print("func2开始")
+    func1()
+    print("func2开始")
+
+def main():
+    # 有传递性 可以在最高一层捕获最底一层出现的异常
+    try:
+        func2()
+    except Exception as e:
+        print(f"出现异常，异常信息是：{e}")
+
+main()
+
+# 传递性 由最底一层到最高层
+# 发生异常: ZeroDivisionError
+# division by zero
+#   File "D:\桌面\Coding\Python\062_异常的传递性.py", line 3, in func1
+#     num = 1 /0
+#           ~~^~
+#   File "D:\桌面\Coding\Python\062_异常的传递性.py", line 8, in func2
+#     func1()
+#   File "D:\桌面\Coding\Python\062_异常的传递性.py", line 12, in main
+#     func2()
+#   File "D:\桌面\Coding\Python\062_异常的传递性.py", line 14, in <module>
+#     main()
+# ZeroDivisionError: division by zero
+```
+
+### 模块的概念和导入
+```python
+# module
+# [from 模块名] import [模块 | 类 | 变量 | 函数 | *] [as 别名]      []可选
+
+# import 导入
+# python 内置time.py 这个文件
+import time
+print("你好")
+time.sleep(5)  # 通过.可以使用模块内部的全部功能（类、函数、变量）
+print("我好")
+
+# from 模块名 import 功能名  针对某个功能去使用
+from time import sleep
+print("你好")
+sleep(5)  # 可以直接调用sleep
+print("我好")
+
+# 使用 * 导入模块所有功能 并可以直接调用 
+from time import *
+print("你好")
+sleep(5)  # 可以直接调用sleep
+print("我好")
+
+# as 别名
+import time as t
+print("你好")
+t.sleep(5)  # 可以直接调用sleep
+print("我好")
+
+from time import sleep as sl
+print("你好")
+sl(5)  # 可以直接调用sleep
+print("我好")
+```
+
+### 自定义模块并导入
+my_module1.py
+```python
+def test(a, b):
+    print(a + b)
+
+def test_1(a, b):
+    print(a - b)
+
+# 当自己运行时name=main 当被其他程序调用时则不是 不执行
+if __name__ == '__main__':
+    test(1, 2)
+```
+
+my_module1.py
+```python
+def test(a, b):
+    print(a - b)
+```
+
+main.py
+```python
+import related_data.my_module1 as my_module1
+my_module1.test(1, 2)
+
+from related_data.my_module1 import test
+test(1, 2)
+
+# 同名功能后一个覆盖前一个
+from related_data.my_module1 import test
+from related_data.my_module2 import test
+test(1, 2)
+
+# 当自己运行时name=main 当被其他程序调用时则不是 不执行  便于测试自定义模块文件
+# if __name__ == '__main__':
+#     test(1, 2)
+
+# 如果在module模块里定义了__all__ = ['test'] 则import * 只会导入all变量里的函数  但其他手动导入方法都可以 e.g import test_1
+from related_data.my_module1 import *
+test(1, 2)
+# test_1(1, 2)
+```
+
+### 自定义Python包
+__init__.py
+```python
+__all__ = ['my_module1']
+```
+
+my_module1.py
+```python
+def print1():
+    print("我是模块1的功能代码")
+
+```
+
+my_module2.py
+```python
+def print2():
+    print("我是模块2的功能代码")
+```
+
+main.py
+```python
+# Python包文件夹 包含一堆python模块和__init__.py
+import related_data.my_package.my_module1
+import related_data.my_package.my_module2
+
+related_data.my_package.my_module1.print1()
+related_data.my_package.my_module2.print2()
+
+from related_data.my_package import my_module1
+from related_data.my_package import my_module2
+my_module1.print1()
+my_module2.print2()
+
+from related_data.my_package.my_module1 import print1
+from related_data.my_package.my_module2 import print2
+print1()
+print2()
+
+# 在包中添加__init_.py才能表示这是个python包，否则只是普通文件夹
+# 在__init_.py中定义all变量 控制*选择的模块
+from related_data.my_package import *
+my_module1.print1()
+# // my_module2.print2()
+```
+
+### 安装第三方包
+```python
+# 第三方包 非python官方内置的包 安装获得扩展功能 提升开发效率
+
+# 直接安装
+# pip install [包名]
+# pip install -i [国内镜像网址]
+
+# pycharm可以通过右下角解释器设置中搜索包并安装
+```
+
+### 异常_模块_包_综合案例讲解
+__init__.py
+```python
+
+```
+
+str_util.py
+```python
+def str_reverse(s):
+    str_re = s[::-1]
+    print(f"原字符串为：{s}")
+    print(f"反转字符串为：{str_re}")
+    return str_re
+
+def substr(s, x , y):
+    piece = s[x: y]
+    print(f"原字符串为：{s}")
+    print(f"字符串切片为：{piece}")
+    return piece
+```
+
+file_util.py
+```python
+def print_file_info(file_name):
+    f = None
+    try:
+        f = open(file_name, "r", encoding="UTF-8")
+        print(f"原文件的全部内容:\n{f.read()}")
+    except FileNotFoundError as e:
+        print("文件不存在！")
+    finally:
+        # * 如果文件打开异常f.close()异常
+        # 解决 在外面先定义f为None 后加if判断f类型
+        if f:
+            f.close()
+
+
+def append_to_file(file_name, data):
+    f = None
+    try:
+        f = open(file_name, "r", encoding="UTF-8")
+        print(f"原文件的全部内容:\n{f.read()}")
+    except FileNotFoundError as e:
+        print("文件不存在！")
+    finally:
+        # * 如果文件打开异常f.close()异常
+        # 解决 在外面先定义f为None 后加if判断f类型
+        if f:
+            f.close()
+
+    f = open(file_name, "a", encoding="UTF-8")
+    f.write(data)
+    f.flush()
+    f.close()
+
+    f = open(file_name, "r", encoding="UTF-8")
+    f.read()
+    print(f"更新后文件的全部内容:\n{f.read()}")
+```
+
+main.py
+```python
+from related_data.my_utils import str_util
+from related_data.my_utils import file_util
+
+str_util.str_reverse('Iven enjoys coding')
+str_util.substr('Iven enjoys coding', 3 , 9)
+
+file_util.print_file_info('related_data/package.txt')
+file_util.append_to_file('related_data/package.txt', 'Iven')
+```
