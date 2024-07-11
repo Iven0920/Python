@@ -2078,3 +2078,185 @@ str_util.substr('Iven enjoys coding', 3 , 9)
 file_util.print_file_info('related_data/package.txt')
 file_util.append_to_file('related_data/package.txt', 'Iven')
 ```
+
+## 第十章 案例1：折线图
+### json数据格式的转换
+```python
+"""
+json 是一种轻量级数据交互格式 可以按照json指定的格式去组织和封装数据 
+本质上是一个带有特定格式的字符串 
+负责不同编程语言中的数据传递和交互 类似于国际通用语言 
+"""
+
+# 格式有两种 一种是字典 另一种是列表嵌套字典
+import json
+
+# dumps() 列表转json
+# 若传入中文加入ensure_ascii=False 不使用ASCII码 直接传入
+data = [{"name":"Iven", "age":"21"}, {"name":"Rosenn", "age":"18"}, {"name":"派大星", "age":"25"}]
+json_str = json.dumps(data, ensure_ascii=False)
+print(type(json_str))
+print(json_str)
+
+# 字典转json
+d = {"name":"Iven", "age":"21"}
+json_str = json.dumps(d , ensure_ascii=False)
+print(type(json_str))
+print(json_str)
+
+# loads() json转列表
+s = '[{"name":"Iven", "age":"21"}, {"name":"Rosenn", "age":"18"}, {"name":"派大星", "age":"25"}]'
+l = json.loads(s) 
+print(type(l))
+print(l)
+
+# json转字典
+d = '{"name":"Iven", "age":"21"}'
+l = json.loads(d) 
+print(type(l))
+print(l)
+
+```
+
+### pyecharts模块简介
+https://pyecharts.org/
+echarts 产生可视化图表 
+Echarts 是一个由百度开源的数据可视化，凭借着良好的交互性，精巧的图表设计，得到了众多开发者的认可。而 Python 是一门富有表达力的语言，很适合用于数据处理。当数据分析遇上数据可视化时，pyecharts 诞生了。
+通过画廊可以复制粘贴相关图表的代码
+
+### pyecharts入门使用
+在069_render.html文件当中
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407112257176.png)
+```python
+from pyecharts.charts import Line
+from pyecharts.options import TitleOpts, LegendOpts, ToolboxOpts, VisualMapOpts
+# Line() 创建一个折线图对象
+line = Line()
+# add_xaxis() 添加x轴的数据
+line.add_xaxis(["中国", "美国", "英国"])
+# add_yaxis() 添加y轴的数据
+line.add_yaxis("GDP", [30, 20, 10])
+# 全局配置选项 set_global_opts() 官网查看更多配置选项
+line.set_global_opts(
+    # 标题 title标题名 pos_left居中 pos_bottom靠近底部1%
+    title_opts=TitleOpts(title="GDP展示", pos_left="center", pos_bottom="1%"),
+    # 图例 是否展示
+    legend_opts=LegendOpts(is_show=True),
+    # 工具箱 是否展示
+    toolbox_opts=ToolboxOpts(is_show=True),
+    # 视觉映射 是否展示
+    visualmap_opts=VisualMapOpts(is_show=True)
+
+)
+# render() 将代码生成为图像
+line.render()
+
+# 全局配置 set_global_opts()
+# 标题 图例 工具箱 
+```
+### 数据处理
+```python
+# www.ab173.com https://www.json.cn/jsononline/ json数据格式化
+# * 这个更好用https://www.bejson.com/
+import json
+
+f_us = open("related_data/可视化案例数据/折线图数据/美国.txt", "r", encoding="UTF-8")
+us_data = f_us.read()
+# 去除不属于json格式的错误部分
+us_data = us_data.replace("jsonp_1629344292311_69436(", "")
+us_data = us_data[:-2]
+# json转字典
+us_dict = json.loads(us_data)
+print(us_dict)
+print(type(us_dict))
+
+# 取趋势字典
+trend_data = us_dict['data'][0]['trend']
+print(trend_data)
+print(type(trend_data))
+
+# 获取日期数据 只取2020年的数据 下标314 但不包括314
+x_data = trend_data['updateDate'][:314]
+print(x_data)
+
+# 获取确诊数据 只取2020年的数据 下标314 但不包括314
+y_data = trend_data['list'][0]['data'][:314]
+print(y_data)
+```
+### 生成折线图
+在071_render.html文件当中
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407120006071.png)
+```python
+# www.ab173.com https://www.json.cn/jsononline/ json数据格式化
+# * 这个更好用https://www.bejson.com/
+import json
+from pyecharts.charts import Line
+from pyecharts.options import TitleOpts, LabelOpts
+
+# todo 美国
+f_us = open("related_data/可视化案例数据/折线图数据/美国.txt", "r", encoding="UTF-8")
+us_data = f_us.read()
+# 去除不属于json格式的错误部分
+us_data = us_data.replace("jsonp_1629344292311_69436(", "")
+us_data = us_data[:-2]
+# json转字典
+us_dict = json.loads(us_data)
+
+# 取趋势字典
+us_trend_data = us_dict['data'][0]['trend']
+
+# 获取日期数据 只取2020年的数据 下标314 但不包括314
+us_x_data = us_trend_data['updateDate'][:314]
+
+# 获取确诊数据 只取2020年的数据 下标314 但不包括314
+us_y_data = us_trend_data['list'][0]['data'][:314]
+
+# todo 日本
+jp_us = open("related_data/可视化案例数据/折线图数据/日本.txt", "r", encoding="UTF-8")
+jp_data = jp_us.read()
+# 去除不属于json格式的错误部分
+jp_data = jp_data.replace("jsonp_1629350871167_29498(", "")
+jp_data = jp_data[:-2]
+# json转字典
+jp_dict = json.loads(jp_data)
+
+# 取趋势字典
+jp_trend_data = jp_dict['data'][0]['trend']
+
+# 获取日期数据 只取2020年的数据 下标314 但不包括314
+jp_x_data = jp_trend_data['updateDate'][:314]
+
+# 获取确诊数据 只取2020年的数据 下标314 但不包括314
+jp_y_data = jp_trend_data['list'][0]['data'][:314]
+
+# todo 印度
+in_us = open("related_data/可视化案例数据/折线图数据/印度.txt", "r", encoding="UTF-8")
+in_data = in_us.read()
+# 去除不属于json格式的错误部分
+in_data = in_data.replace("jsonp_1629350745930_63180(", "")
+in_data = in_data[:-2]
+# json转字典
+in_dict = json.loads(in_data)
+
+# 取趋势字典
+in_trend_data = in_dict['data'][0]['trend']
+
+# 获取日期数据 只取2020年的数据 下标314 但不包括314
+in_x_data = in_trend_data['updateDate'][:314]
+
+# 获取确诊数据 只取2020年的数据 下标314 但不包括314
+in_y_data = in_trend_data['list'][0]['data'][:314]
+
+# todo 生成图表
+line = Line()
+line.add_xaxis(us_x_data)
+# label_opts 设置不显示y轴数字
+line.add_yaxis("美国确诊人数", us_y_data, label_opts=LabelOpts(is_show=False))
+line.add_yaxis("日本确诊人数", jp_y_data, label_opts=LabelOpts(is_show=False))
+line.add_yaxis("印度确诊人数", in_y_data, label_opts=LabelOpts(is_show=False))
+
+line.set_global_opts(
+    title_opts=TitleOpts(title='2020年美日印三国确诊人数对比折线图', pos_left='center', pos_bottom='1%'),
+)
+line.render()
+```
