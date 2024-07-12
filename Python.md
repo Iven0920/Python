@@ -1,5 +1,8 @@
-# 从零开始学Python
+# Python
+github：https://github.com/IvenStarry  
+
 学习视频网站：B站黑马程序员
+https://www.bilibili.com/video/BV1qW4y1a7fU?p=1&vd_source=6fd71d34326a08965fdb07842b0124a7
 ## 第一章
 ### 第一个python程序
 ```python
