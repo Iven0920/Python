@@ -2079,7 +2079,7 @@ file_util.print_file_info('related_data/package.txt')
 file_util.append_to_file('related_data/package.txt', 'Iven')
 ```
 
-## 第十章 案例1：折线图
+## 第十章 数据可视化 案例1：折线图
 ### json数据格式的转换
 ```python
 """
@@ -2261,8 +2261,300 @@ line.set_global_opts(
 line.render()
 ```
 
-
+## 第十一章 数据可视化 案例2：地图
+### 基础地图使用
 ![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407120927166.png)
+```python
+from pyecharts.charts import Map
+from pyecharts.options import VisualMapOpts
+
+map = Map()
+data = [
+    ("北京市", 99),
+    ("湖南省", 199),
+    ("上海市", 299),
+    ("台湾省", 399),
+    ("广东省", 499)
+]
+
+# add() 图例 数据列表 地图类型
+map.add("测试地图", data, "china")
+map.set_global_opts(
+    visualmap_opts=VisualMapOpts(
+        # 是否显示视觉映射
+        is_show=True, 
+        # 是否允许手动校准范围/是否分段
+        is_piecewise=True,
+        # 设置颜色区间 最小值 最大值 区域标签 找到RGB16色代码
+        pieces=[
+            {"min":1, "max":9, "label":"1-9", "color":"#CCFFFF"},
+            {"min":10, "max":99, "label":"10-9", "color":"#FF6666"},
+            {"min":100, "max":500, "label":"100-500", "color":"#990033"},
+        ]
+        )
+)
+map.render("related_data/072_基础地图使用.html")
+```
+
+### 全国疫情地图构建
 ![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407121007961.png)
+```python
+import json
+from pyecharts.charts import Map
+from pyecharts.options import *
+
+f = open("related_data/可视化案例数据/地图数据/疫情.txt", "r", encoding="UTF-8")
+data = f.read()
+f.close()
+
+# 转字典
+data_dict = json.loads(data)
+# 取出省份数据
+province_data_list = data_dict['areaTree'][0]['children']
+# 组装每个省份和确诊人数为元组，将各个省的数据都封装在列表内
+data_list = []
+for province_data in province_data_list:
+    # 省份名称 新版pyecharts必须写清楚省市
+    if province_data["name"] == '北京' or province_data["name"] == '天津' or province_data["name"] == '上海' or province_data["name"] == '重庆':
+        province_name = province_data["name"] + "市"
+    elif province_data["name"] == '西藏' or province_data["name"] == '内蒙古':
+        province_name = province_data["name"] + "自治区"
+    elif province_data["name"] == '广西' :
+        province_name = province_data["name"] + "壮族自治区"
+    elif province_data["name"] == '新疆' :
+        province_name = province_data["name"] + "维吾尔自治区"
+    elif province_data["name"] == '宁夏' :
+        province_name = province_data["name"] + "回族自治区"
+    elif province_data["name"] == '香港' or province_data["name"] == '澳门':
+        province_name = province_data["name"] + "特别行政区"
+    else:
+        province_name = province_data["name"] + "省"
+    # 确诊人数
+    province_confirm = province_data["total"]["confirm"]
+    data_list.append((province_name, province_confirm))
+print(data_list)
+
+# 创建地图对象
+map = Map()
+# add() 图例 数据列表 地图类型
+map.add("各省份确诊人数", data_list, "china")
+
+map.set_global_opts(
+    title_opts=TitleOpts(title="全国疫情地图"),
+    visualmap_opts=VisualMapOpts(
+        is_show=True,
+        is_piecewise=True,
+        pieces=[
+            {"min": 1, "max": 99, "label": "1-99人", "color": "#CCFFFF"},
+            {"min": 100, "max": 999, "label": "100-999人", "color": "#FFFF99"},
+            {"min": 1000, "max": 4999, "label": "1000-4999人", "color": "#FF9966"},
+            {"min": 5000, "max": 9999, "label": "5000-9999人", "color": "#FF6666"},
+            {"min": 10000, "max": 99999, "label": "10000-99999人", "color": "#CC3333"},
+            {"min": 100000, "label": "100000+人", "color": "#990033"},
+        ]
+    )
+)
+# 设置文件名
+map.render("related_data/073_全国疫情地图.html")
+```
+
+### 河南省疫情地图绘制
 ![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407121024076.png)
+```python
+import json
+from pyecharts.charts import Map
+from pyecharts.options import *
+
+f = open("related_data/可视化案例数据/地图数据/疫情.txt", "r", encoding="UTF-8")
+data = f.read()
+f.close()
+
+
+# 转字典
+data_dict = json.loads(data)
+# 取出省份数据
+henan_data_list = data_dict['areaTree'][0]['children'][3]['children']
+# 组装每个省份和确诊人数为元组，将各个省的数据都封装在列表内
+city_data_list = []
+for city_data in henan_data_list:
+    # 省份名称 新版pyecharts必须写清楚省市
+    city_name = city_data["name"] + "市"
+    # 确诊人数
+    city_confirm = city_data["total"]["confirm"]
+    city_data_list.append((city_name, city_confirm))
+print(city_data_list)
+# 手动添加济源市的数据
+city_data_list.append(("济源市", 5))
+
+# 创建地图对象
+# add() 图例 数据列表 地图类型
+map = Map()
+map.add("河南省各市确诊人数", city_data_list, "河南")
+
+map.set_global_opts(
+    # title_opts 地图标题
+    title_opts=TitleOpts(title="河南省疫情地图"),
+    visualmap_opts=VisualMapOpts(
+        is_show=True,
+        is_piecewise=True,
+        pieces=[
+            {"min": 1, "max": 99, "label": "1-99人", "color": "#CCFFFF"},
+            {"min": 100, "max": 999, "label": "100-999人", "color": "#FFFF99"},
+            {"min": 1000, "max": 4999, "label": "1000-4999人", "color": "#FF9966"},
+            {"min": 5000, "max": 9999, "label": "5000-9999人", "color": "#FF6666"},
+            {"min": 10000, "max": 99999, "label": "10000-99999人", "color": "#CC3333"},
+            {"min": 100000, "label": "100000+人", "color": "#990033"},
+        ]
+    )
+)
+# 设置文件名
+map.render("related_data/074_河南省疫情地图.html")
+```
+
+## 第十二章 数据可视化 案例3：动态柱状图
+### 基础柱状图构建
 ![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407121039198.png)
+```python
+from pyecharts.charts import Bar
+from pyecharts.options import LabelOpts
+bar = Bar()
+
+bar.add_xaxis(["中国", "美国", "英国"])
+# 图例 数值 让数值位于图右侧
+bar.add_yaxis("GDP", [30, 20, 10], label_opts=LabelOpts(position="right"))
+
+# 翻转xy轴
+bar.reversal_axis()
+bar.render("related_data/075_基础柱状图.html")
+```
+
+### 基础时间线柱状图绘制
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407121443176.png)
+```python
+from pyecharts.charts import Bar, Timeline
+from pyecharts.options import LabelOpts
+from pyecharts.globals import ThemeType
+
+bar1 = Bar()
+bar1.add_xaxis(["中国", "美国", "英国"])
+bar1.add_yaxis("GDP", [30, 20, 10], label_opts=LabelOpts(position="right"))
+bar1.reversal_axis()
+
+bar2 = Bar()
+bar2.add_xaxis(["中国", "美国", "英国"])
+bar2.add_yaxis("GDP", [50, 10, 50], label_opts=LabelOpts(position="right"))
+bar2.reversal_axis()
+
+bar3 = Bar()
+bar3.add_xaxis(["中国", "美国", "英国"],)
+bar3.add_yaxis("GDP", [90, 40, 70], label_opts=LabelOpts(position="right"))
+bar3.reversal_axis()
+
+# 创建时间线 timeline对象 
+# 设置时间线主题
+timeline = Timeline({"theme": ThemeType.DARK})
+timeline.add(bar1, "点1")
+timeline.add(bar2, "点2")
+timeline.add(bar3, "点3")
+
+# 自动播放 add_schema()
+timeline.add_schema(
+    # 自动播放时间间隔 单位毫秒
+    play_interval=1000,
+    # 是否在自动播放时候, 显示时间线
+    is_timeline_show=True,
+    # 是否自动播放
+    is_auto_play=True,
+    # 是否循环自动播放
+    is_loop_play=True
+)
+
+timeline.render("related_data/076_基础时间线柱状图.html")
+```
+
+### 动态GDP柱状图绘制
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407121446918.png)
+```python
+from pyecharts.charts import Bar, Timeline
+from pyecharts.options import LabelOpts, TitleOpts
+from pyecharts.globals import ThemeType
+
+# todo 补充：列表的sort方法
+# 列表.sort(key=排序函数, reverse=T/F
+my_list = [["a", 33], ["b", 55], ["c", 88]]
+
+# 第一种 def自定义函数
+def choose_sort_key(element):
+    return element[1]
+
+my_list.sort(key=choose_sort_key, reverse=True)
+# print(my_list)
+
+# 第二种 lambda匿名函数
+my_list.sort(key=lambda element: element[1], reverse=True)
+# print(my_list)
+
+# todo 数据处理
+# csv编码格式 简体中文 GB2312
+f = open("related_data/可视化案例数据/动态柱状图数据/1960-2019全球GDP数据.csv", "r", encoding="GB2312")
+# 返回一个列表 每一行为一个元素
+data_lines = f.readlines()
+f.close()
+# 删除表头行
+data_lines.pop(0)
+
+# 数据转换字典 格式：{年份：[[国家,gdp], [国家, gdp], ......], 年份：[[国家,gdp], [国家, gdp], ......],年份：[[国家,gdp], [国家, gdp], ......]}
+data_dict = {}
+for line in data_lines:
+    year = int(line.split(',')[0])
+    country = line.split(',')[1]
+    # 科学计数法全部显示 转float类型
+    gdp = float(line.split(',')[2])
+    # 想要给年份的列表值用append前 列表必须有定义[] 才能继续添加新元素
+    # my_dict = {}
+    # my_dict['Iven']
+    # 判断字典里有没有指定的Key值
+    try:
+        data_dict[int(year)].append([country, gdp])
+    except KeyError:
+        data_dict[int(year)] = []
+        data_dict[int(year)].append([country, gdp])
+# print(data_dict)
+
+# todo 绘图
+# 创建时间线对象 主题选择
+timeline = Timeline({"theme":ThemeType.CHALK})
+# 排序年份 防止字典读取混乱
+sorted_year_list = sorted(data_dict.keys())
+# print(sorted_year_list)
+
+for year in sorted_year_list:
+    data_dict[year].sort(key=lambda element:element[1], reverse=True)
+    year_data = data_dict[year][:8]
+    x_data = []
+    y_data = []
+    for country_gdp in year_data:
+        x_data.append(country_gdp[0]) # 国家
+        y_data.append(round(country_gdp[1] / 100000000, 1)) # gdp round()函数四舍五入只小数点后一位
+    
+    bar = Bar()
+    # 为了让gdp最大的放在最上面 翻转年份和数据
+    x_data.reverse()
+    y_data.reverse()
+    bar.add_xaxis(x_data)
+    bar.add_yaxis("GDP(亿)",y_data, label_opts=LabelOpts(position="right"))
+    bar.reversal_axis()
+    bar.set_global_opts(
+        # 图像标题
+        title_opts=TitleOpts(title=f"{year}年全球前8GDP")
+    )
+    timeline.add(bar, str(year))
+
+timeline.add_schema(
+    play_interval=1000,
+    is_timeline_show=True,
+    is_auto_play=True,
+    is_loop_play=True
+)
+timeline.render("related_data/077_1960-2019全球GDP前8国家.html")
+```
