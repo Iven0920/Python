@@ -19,7 +19,7 @@ line.set_global_opts(
 
 )
 # render() 将代码生成为图像
-line.render()
+line.render("related_data/069_pyecharts入门使用.html")
 
 # 全局配置 set_global_opts()
 # 标题 图例 工具箱 

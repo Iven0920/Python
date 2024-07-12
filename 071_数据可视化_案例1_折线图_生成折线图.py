@@ -69,4 +69,4 @@ line.add_yaxis("印度确诊人数", in_y_data, label_opts=LabelOpts(is_show=Fal
 line.set_global_opts(
     title_opts=TitleOpts(title='2020年美日印三国确诊人数对比折线图', pos_left='center', pos_bottom='1%'),
 )
-line.render()
+line.render("related_data/071_生成折线图.html")

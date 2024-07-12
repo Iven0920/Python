@@ -7,7 +7,7 @@ print(type(f))
 print(f"读取十个字节的结果：{f.read(10)}")
 print(f"读取全部内容的结果：{f.read()}")
 
-# readlines() 文件内容一次性读取，返回一个列表，每一行的数据为一个元素
+# readlines() 文件内容一次性读取，返回一个列表，每一行的数据为一个元素（字符串）
 f = open("related_data/test.txt", "r", encoding="UTF-8")
 lines = f.readlines()
 print(f"lines对象的类型：{type(lines)}，内容为{lines}")

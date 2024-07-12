@@ -2260,3 +2260,9 @@ line.set_global_opts(
 )
 line.render()
 ```
+
+
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407120927166.png)
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407121007961.png)
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407121024076.png)
+![](https://cdn.jsdelivr.net/gh/IvenStarry/Image/MarkdownImage/202407121039198.png)

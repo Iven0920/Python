@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Awesome-pyecharts</title>
-                <script type="text/javascript" src="https://assets.pyecharts.org/assets/v5/echarts.min.js"></script>
+            <script type="text/javascript" src="https://assets.pyecharts.org/assets/v5/echarts.min.js"></script>
 
 </head>
 <body >
-    <div id="9760bc69d1904e608ab46b40d7623878" class="chart-container" style="width:900px; height:500px; "></div>
+    <div id="9691a7b8305746ad8f5fd728350ffcee" class="chart-container" style="width:900px; height:500px; "></div>
     <script>
-        var chart_9760bc69d1904e608ab46b40d7623878 = echarts.init(
-            document.getElementById('9760bc69d1904e608ab46b40d7623878'), 'white', {renderer: 'canvas'});
-        var option_9760bc69d1904e608ab46b40d7623878 = {
+        var chart_9691a7b8305746ad8f5fd728350ffcee = echarts.init(
+            document.getElementById('9691a7b8305746ad8f5fd728350ffcee'), 'white', {renderer: 'canvas'});
+        var option_9691a7b8305746ad8f5fd728350ffcee = {
     "animation": true,
     "animationThreshold": 2000,
     "animationDuration": 1000,
@@ -45,7 +45,6 @@
             "smooth": false,
             "clip": true,
             "step": false,
-            "stackStrategy": "samesign",
             "data": [
                 [
                     "\u4e2d\u56fd",
@@ -66,7 +65,6 @@
                 "margin": 8
             },
             "logBase": 10,
-            "seriesLayoutBy": "column",
             "lineStyle": {
                 "show": true,
                 "width": 1,
@@ -86,7 +84,9 @@
             "data": [
                 "GDP"
             ],
-            "selected": {},
+            "selected": {
+                "GDP": true
+            },
             "show": true,
             "padding": 5,
             "itemGap": 10,
@@ -94,6 +94,7 @@
             "itemHeight": 14,
             "backgroundColor": "transparent",
             "borderColor": "#ccc",
+            "borderWidth": 1,
             "borderRadius": 0,
             "pageButtonItemGap": 5,
             "pageButtonPosition": "end",
@@ -282,7 +283,7 @@
         "borderWidth": 0
     }
 };
-        chart_9760bc69d1904e608ab46b40d7623878.setOption(option_9760bc69d1904e608ab46b40d7623878);
+        chart_9691a7b8305746ad8f5fd728350ffcee.setOption(option_9691a7b8305746ad8f5fd728350ffcee);
     </script>
 </body>
 </html>
