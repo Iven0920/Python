@@ -1,5 +1,5 @@
 from pyecharts.charts import Bar, Timeline
-from pyecharts.options import LabelOpts, TitleOpts
+from pyecharts.options import LabelOpts, TitleOpts, InitOpts
 from pyecharts.globals import ThemeType
 
 # todo 补充：列表的sort方法
@@ -45,8 +45,9 @@ for line in data_lines:
 # print(data_dict)
 
 # todo 绘图
-# 创建时间线对象 主题选择
+# 创建时间线对象 主题选择 两种方法
 timeline = Timeline({"theme":ThemeType.CHALK})
+# timeline = Timeline(init_opts=InitOpts(theme=ThemeType.CHALK))
 # 排序年份 防止字典读取混乱
 sorted_year_list = sorted(data_dict.keys())
 # print(sorted_year_list)

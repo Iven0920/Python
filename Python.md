@@ -2561,3 +2561,651 @@ timeline.add_schema(
 )
 timeline.render("related_data/077_1960-2019全球GDP前8国家.html")
 ```
+
+## 第十三章
+### 初识对象
+```python
+# 使用对象组织数据
+# 1.设计类（设计表格）
+class Student:
+    name = None
+    gender  = None
+    nationality = None
+    native_place = None
+    age = None
+
+# 2.创建对象（打印一张登记表） stu_1既是变量又是类的对象
+stu_1 = Student()
+
+# 3. 对像属性赋值（填写表单）
+stu_1.name = "Iven"
+stu_1.gender = "男"
+stu_1.nationality = "中国"
+stu_1.native_place = "四川省"
+stu_1.age = 22
+
+# 4. 获取对象中记录的信息
+print(stu_1.name)
+print(stu_1.gender)
+print(stu_1.nationality)
+print(stu_1.native_place)
+print(stu_1.age)
+
+```
+
+### 类的成员方法
+```python
+# 类的定义和使用
+# class 类名称: 类的属性（成员变量） 类的行为（成员方法）
+# 函数：类外部的函数 方法：类内部的函数
+
+class Student():
+    name = None
+    # 在成员方法中访问成员变量 加self
+    # def (self) self就是类对象本身
+    def say_hi(self):
+        print(f"大家好！我是{self.name}")
+    
+    # 在成员方法中访问外部传入的变量 不需要self
+    def greet(self, msg):
+        print(f"大家好，我是{self.name}, {msg}")
+
+stu_1 = Student()
+stu_1.name = "Iven"
+# self自动传入 可当作不存在 无需理会
+stu_1.say_hi()
+stu_1.greet("哈哈哈哈")
+
+stu_2 = Student()
+stu_2.name = "Rosenn"
+# self自动传入 可当作不存在 无需理会
+stu_2.say_hi()
+```
+
+### 类和对象
+```python
+# 使用类的属性和行为 可以描述现实世界的一切事物
+# 面向对象编程： 使用对象进行编程 设计类 基于类创建对象 使用对象完成功能开发
+# 类是程序中的设计图纸 对象是基于图纸生产的具体实体
+
+class Clock:
+    id = None
+    price = None
+    
+    def ring(self):
+        import winsound
+        winsound.Beep(2000, 3000)
+
+# 构建对象
+clock1 = Clock()
+clock1.id = "01234"
+clock1.price = 19.99
+print(f"闹钟ID:{clock1.id}，价格:{clock1.price}")
+clock1.ring()
+
+clock2 = Clock()
+clock2.id = "01254"
+clock2.price = 21.99
+print(f"闹钟ID:{clock2.id}，价格:{clock2.price}")
+clock2.ring()
+```
+
+### 构造方法
+```python
+# 属性成员变量的赋值
+# 构造方法 __init__()
+# 在创建类对象（构造类）的时候，会自动执行
+# 在创建类对象（构造类）的时候，将传入参数自动传递给__init__方法使用
+
+class Student:
+    # 这里可以不写成员变量
+    # name = None
+    # age = None
+    # tel = None
+
+    def __init__(self, name, age, tel):
+        self.name = name
+        self.age = age
+        self.tel = tel
+        print("Student类创建了一个对象")
+
+stu = Student("Iven", 22, 18744440367)
+print(stu.name)
+print(stu.age)
+print(stu.tel)
+
+# 练习
+class Student:
+    def __init__(self, name, age, place):
+        self.name = name
+        self.age = age
+        self.place = place
+
+# * 定义一个list用来存储10个学生信息对象
+stu_list = []
+for i in range (10):
+    print(f"当前录入第{i + 1}位学生信息，总共需要录取10位同学")
+    name = input("请输入学生姓名：")
+    age = input("请输入学生年龄：")
+    place = input("请输入学生地址：")
+    stu = Student(name, age, place)
+    stu_list.append(stu)
+    print(f"学生{i + 1}信息录入完成，信息为【学生姓名：{stu.name}，年龄：{stu.age}，地址：{stu.place}】")
+
+print(stu_list)
+```
+
+### 魔术方法
+```python
+# 魔术方法 Python类内置的方法
+# 1. __inti__ 构造方法
+# 2. __str__ 字符串方法 输出类对象时使用将 类对象转为字符串输出   不加此方法直接print对象会显示对象内存地址
+class Student:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    
+    def __str__(self):
+        return f"Student类对象，name:{self.name}，age:{self.age}"
+
+stu = Student("Iven", 22)
+print(stu)
+print(str(stu))
+
+# 3. __lt__  小于符号比较方法（大于）
+class Student:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    
+    def __str__(self):
+        return f"Student类对象，name:{self.name}，age:{self.age}"
+    
+    def __lt__(self, other):
+        return self.age < other.age
+
+stu1 = Student("Iven", 22)
+stu2 = Student('Rosenn', 25)
+print(stu1 < stu2)
+print(stu1 > stu2)
+
+# 4. __le__  小于等于符号比较方法（大于等于）
+class Student:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    
+    def __str__(self):
+        return f"Student类对象，name:{self.name}，age:{self.age}"
+    
+    def __lt__(self, other):
+        return self.age < other.age
+    
+    def __le__(self, other):
+        return self.age <= other.age
+
+stu1 = Student("Iven", 22)
+stu2 = Student('Rosenn', 22)
+print(stu1 < stu2)
+print(stu1 > stu2)
+
+# 若未调用eq方法 则默认比较内存地址
+print(stu1 == stu2)
+
+# 5. __eq__  比较运算符比较方法（大于等于）
+
+class Student:
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+    
+    def __str__(self):
+        return f"Student类对象，name:{self.name}，age:{self.age}"
+    
+    def __lt__(self, other):
+        return self.age < other.age
+    
+    def __le__(self, other):
+        return self.age <= other.age
+    
+    def __eq__(self, other):
+        return self.age == other.age
+
+stu1 = Student("Iven", 22)
+stu2 = Student('Rosenn', 22)
+print(stu1 == stu2)
+```
+
+### 封装
+```python
+# 面向对象三大特性 封装 继承 多态
+
+# 封装 将现实世界在类中描述为属性和方法，即为封装
+# 私有成员变量、私有成员方法： __变量名/方法名
+# 类对象五大访问私有成员
+# 类中其他成员可以访问私有成员
+class Phone:
+
+    __current_voltage = 0.5
+
+    def __keep_single_core(self):
+        print("让CPU以单核模式运行")
+    
+    def call_by_5g(self):
+        if self.__current_voltage >= 1:
+            print("5g通话已开启")
+        else:
+            self.__keep_single_core()
+            print("电量不足，无法使用5g通话，并以设置为单核运行进行声带你")
+
+
+phone = Phone()
+# 不可以调用私有成员
+# // print(phone.__current_voltage)
+# // phone.__keep_single_core()
+phone.call_by_5g()
+
+# 练习
+class Phone:
+
+    __is_5g_enable = False
+    
+    def __check_5g(self):
+        if self.__is_5g_enable:
+            print("5g开启")
+        else:
+            print("5g关闭，是哦那个4g网络")
+    
+    def call_by_5g(self):
+        self.__check_5g()
+        print("正在通话中")
+
+iphone = Phone()
+iphone.call_by_5g()
+```
+
+### 继承的基础语法
+```python
+# 继承
+# 单继承 class 子类名(父类名):
+class Phone():
+    IMEI = None
+    producer = "Iven"
+    
+    def call_by_4g(self):
+        print("4g通话")
+
+class Phone2024(Phone):
+    face_id = "10001"
+
+    def call_by_5g(self):
+        print("2024新功能：5g通话")
+
+iphone = Phone2024()
+iphone.call_by_4g()
+iphone.call_by_5g()
+
+
+# 多继承 class 子类名(父类名1, 父类名2, 父类名3,...)
+# 继承顺序：左边最高 右边最低
+# 在多个父类中，如果有同名的成员，先继承的保留，后继承的被覆盖，默认以继承顺序为优先级
+class Phone():
+    IMEI = None
+    producer = "Iven"
+    
+    def call_by_4g(self):
+        print("4g通话")
+
+class NFCReader():
+    nfc_type = "第五代"
+    producer = "Rosenn"
+
+    def read_card(self):
+        print("NFC读卡")
+    def write_card(self):
+        print("NFC写卡")
+
+class RemoteControl:
+    re_type = "红外遥控"
+
+    def control(self):
+        print("红外遥控开始了")
+
+class MyPhone(Phone, NFCReader, RemoteControl):
+    # 通过关键字pass来补充语法上的不完整 实际无任何意义
+    pass
+
+phone = MyPhone()
+phone.call_by_4g()
+phone.read_card()
+phone.write_card()
+phone.control()
+
+print(phone.producer)
+```
+
+### 复写父类成员和调用父类成员
+```python
+# 复写 子类继承父类的成员属性和成员方法后，如果对其不满意。可以进行重新定义
+class Phone():
+    IMEI = None
+    producer = "Iven"
+    
+    def call_by_5g(self):
+        print("父类单核5g通话")
+
+class MyPhone(Phone):
+    producer = "Rosenn"
+
+    def call_by_5g(self):
+        print("子类多核5g通话")
+
+phone = MyPhone()
+phone.call_by_5g()
+
+# 调用父类同名成员
+class Phone():
+    IMEI = None
+    producer = "Iven"
+    
+    def call_by_5g(self):
+        print("使用5g通话")
+
+class MyPhone(Phone):
+    producer = "Rosenn"
+
+    def call_by_5g(self):
+        print("开启CPU单核模式")
+
+        # 方法1： 父类名.成员变量/成员方法(self)
+        print(f"父类的厂商是:{Phone.producer}")
+        Phone.call_by_5g(self)
+
+        # 方法2： super().成员变量/成员方法()
+        print(f"父类的厂商是:{super().producer}")
+        super().call_by_5g()
+        print("关闭CPU单核模式")
+
+phone = MyPhone()
+phone.call_by_5g()
+```
+
+### 变量的类型注释
+```python
+import random, json
+# 类型注解  在代码涉及数据交互的地方，提供数据类型的注解 协助IDE对数据类型进行提示或开打发着自身做类型的备注
+# 一般只会在一眼看不出来的代码里去注释 
+# todo 变量类型注解 变量:类型 
+# 1.基础数据类型注解 
+val_1: int = 18
+var_2: str = "Iven"
+var_3: bool = True
+
+# 2.类对象型注解 
+class Student:
+    pass
+stu: Student = Student()
+
+# 3.基础容器类型注解 
+my_list: list = [1, 2, 3]
+my_tuple: tuple = (1, 2, 3)
+my_dict: dict = {"Iven", 22}
+
+# 4.容器类型详细注解（元组注释要将每一个元素标记 字典注释要2个类型 key value）
+my_list: list[int] = [1, 2, 3]
+my_tuple: tuple[int, str, bool] = (1, '2', True)
+my_dict: dict[str, int] = {"Iven", 22}
+
+# todo 在注释中进行类型注解 type: int
+val_1 = random.randint(1, 10) # type: int
+val_2 = json.loads('{"name": "Iven"}') # type: dict[str, str]
+def func():
+    return 10
+val_3 = func() # type: int
+
+# 类型注释只是提示性的 写错不会报错
+val_4: int = 'Iven'
+val_5: str = 123
+```
+
+### 函数和方法类型注释
+```python
+# 对函数（方法）的类型注解  
+# 形参注解 def 方法名(形参名:类型, ....)
+
+def add(x: int, y: int):
+    return x + y
+add()
+
+# 返回值注解 def 方法名(形参名:类型, ....) -> 返回值类型
+def func(data: list) -> list:
+    return data
+func()
+
+# 提示性而非决定性
+print(func(1))
+```
+
+### Union联合类型注释
+```python
+# Union类型 使用Union可以进行联合类型注释 对list、dict、函数存放的不同类型数据进行注释 显示某一数据类型或另一数据类型
+
+from typing import Union
+my_list: list[Union[int, str]] =[1, 2, "Iven", "Rosenn"]
+
+def func(data: Union[int, str]) -> Union[int, str]:
+    pass
+func()
+```
+
+### 多态
+```python
+# 多态:多种状态 
+# 完成某个行为时，使用不同的对象会得到不同的状态
+# 同样的行为 传入不同的对象 得到不同的状态
+
+class Animal():
+    def speak(self):
+        pass
+
+class Dog(Animal):
+    def speak(self):
+        print("汪汪")
+
+class Cat(Animal):
+    def speak(self):
+        print("喵喵")
+
+def make_noise(animal: Animal) -> str:
+    animal.speak()
+
+dog = Dog()
+cat = Cat()
+
+make_noise(dog)
+make_noise(cat)
+
+# 抽象类（接口）：含有抽象方法的类称之为抽象类
+# 抽象方法： 方法体是空实现的(pass)称之为抽象方法
+# 父类来确定有哪些方法 具体方法实现由子类自行决定 顶层设计与底层具体实现
+class AC:
+    def cool_wind(self):
+        pass
+
+    def hot_wind(self):
+        pass
+
+    def swing_l_r_wind(self):
+        pass
+
+class Midea_AC(AC):
+    def cool_wind(self):
+        print("美的空调制冷")
+
+    def hot_wind(self):
+        print("美的空调制热")
+
+    def swing_l_r_wind(self):
+        print("美的空调左右摆风")
+
+class GREE_AC(AC):
+    def cool_wind(self):
+        print("格力空调制冷")
+
+    def hot_wind(self):
+        print("格力空调制热")
+
+    def swing_l_r_wind(self):
+        print("格力空调左右摆风")
+
+def make_cool(ac:AC):
+    ac.cool_wind()
+    ac.hot_wind()
+    ac.swing_l_r_wind()
+
+midea_ac = Midea_AC()
+gree_ac = GREE_AC()
+
+make_cool(midea_ac)
+make_cool(gree_ac)
+```
+
+### 数据分析案例 每日销售额柱状图
+#### data_define.py
+```python
+"""
+数据定义的类
+"""
+
+class Record:
+    def __init__(self, date, order_id, money, province):
+        self.date = date
+        self.order_id = order_id
+        self.money = money
+        self.province = province
+    
+    def __str__(self):
+        return f"{self.date}, {self.order_id}, {self.money}, {self.province}"
+```
+#### file_define.py
+```python
+"""
+和文件相关的类
+"""
+# todo 导入模块中名字带有数字或空格使用内置函数__import__
+# __import__(name, globals, locals, fromlist, level)
+# 只有name是必选参数，其他都是可选参数，一般情况下直接使用name参数即可。
+# fromlist指明需要导入的子模块名，level指定导入方式（相对导入或者绝对导入， 默认两者都支持）
+
+# data_define =  __import__("090_数据分析案例_data_define")
+data_define = __import__("090_数据分析案例_data_define", fromlist="Record")
+import json
+
+class FileReader:
+    # 但这里不能正常注释Record类 最好还是纯英文文件
+    # def read_data(self) -> list[Record]:
+    def read_data(self) -> list:
+        """读取文件数据 读的数据转为Record对象 并封装在list内返回即可"""
+        pass
+
+class TextFileReader(FileReader):
+    def __init__(self, path):
+        self.path = path
+    
+    # 复写
+    # def read_data(self) -> list[Record]:
+    def read_data(self) -> list:
+        f = open(self.path, "r", encoding="UTF-8")
+        
+        record_list = []
+
+        for line in f.readlines():
+            # 消除换行符
+            line = line.strip()
+            data_list = line.split(",")
+            record = data_define.Record(data_list[0], data_list[1], int(data_list[2]), data_list[3])
+            record_list.append(record)
+        
+        f.close()
+
+        # 返回数据列表
+        return record_list
+
+class JsonFileReader(FileReader):
+    def __init__(self, path):
+        self.path = path
+    
+    # 复写
+    # def read_data(self) -> list[Record]:
+    def read_data(self) -> list:
+        f = open(self.path, "r", encoding="UTF-8")
+        
+        record_list = []
+
+        for line in f.readlines():
+            # 消除换行符 这里可要可不要
+            # line = line.strip()
+            data_dict = json.loads(line)
+            record = data_define.Record(data_dict['date'], data_dict['order_id'], int(data_dict['money']), data_dict['province'])
+            record_list.append(record)
+        
+        f.close()
+        
+        # 返回数据列表
+        return record_list
+
+if __name__ == '__main__':
+    text_file_reader = TextFileReader("related_data/2011年1月销售数据.txt")
+    list1 = text_file_reader.read_data()
+    json_file_reader = JsonFileReader("related_data/2011年2月销售数据JSON.txt")
+    list2 = json_file_reader.read_data()
+    
+    # __str__方法输出数据
+    for l in list1:
+        print(l)
+    for l in list2:
+        print(l)
+```
+#### main.py
+```python
+"""
+1. 设计一个类 完成数据的封装
+2. 设计一个抽象类 定义文件读取的相关功能 用子类实现具体功能
+3. 读取文件，生产数据对象
+4. 数据计算
+5. PyEcharts绘图
+"""
+from pyecharts.charts import Bar
+from pyecharts.options import TitleOpts, LabelOpts, InitOpts
+from pyecharts.globals import ThemeType
+file_define = __import__("090_数据分析案例_file_define") 
+data_define = __import__("090_数据分析案例_data_define")
+
+text_file_reader = file_define.TextFileReader("related_data/2011年1月销售数据.txt")
+json_file_reader = file_define.JsonFileReader("related_data/2011年2月销售数据JSON.txt")
+
+jan_data: list = text_file_reader.read_data()
+feb_data: list = json_file_reader.read_data()
+# 合并为一个list储存
+all_data = jan_data + feb_data
+
+# 数据计算
+data_dict = {}
+for record in all_data:
+    if record.date in data_dict.keys():
+        data_dict[record.date] += record.money
+    else:
+        data_dict[record.date] = record.money
+# print(data_dict)
+
+# 绘图 两种主题选择方式
+bar = Bar(init_opts=InitOpts(theme=ThemeType.DARK))
+# bar = Bar({"theme":ThemeType.LIGHT})
+
+bar.add_xaxis(list(data_dict.keys()))
+bar.add_yaxis("销售额", list(data_dict.values()), label_opts=LabelOpts(is_show=False))
+bar.set_global_opts(
+    title_opts = TitleOpts(title="每日销售额")
+)
+bar.render("related_data/090_数据分析案例_每日销售额柱状图.html")
+```
