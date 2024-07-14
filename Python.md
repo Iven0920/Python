@@ -3209,3 +3209,71 @@ bar.set_global_opts(
 )
 bar.render("related_data/090_数据分析案例_每日销售额柱状图.html")
 ```
+
+## 第十四章
+### SQL语言 数据库介绍
+数据的存储：txt、excel、数据库
+管理库、管理表、管理数据
+数据库就是数据存储的库，是组织数据并存储数据
+SQL语言是对数据库、数据进行操作、管理、查询的工具
+使用数据库软件去获得库->表->数据，提供数据组织、存储的能力
+使用SQL语言，完成数据的增删改查等操作
+
+### MySQL的入门使用
+show databases; 查看有哪些数据库
+use 数据库名; 使用某个数据库
+show tables; 查看数据库里有哪些表
+exit 退出MySQL的命令行环境
+图形化工具：DBeaver
+
+### SQL基础和DDL
+数据定义：DDL
+数据操纵：DML
+数据控制：DCL
+数据查询：DQL
+
+
+```sql
+# 注释：1.单行注释 -- 注释 2.单行注释 # 注释 3.多行注释 /* 注释/*
+-- 注释1
+# 注释2
+/*
+ 我
+ 是
+ 注释
+*/
+
+# SQL语言特点：大小写不敏感， ;结尾
+# 查看数据库 show databases
+show databases;
+
+# 使用数据库 use 数据库名称
+use world;
+
+# 查看当前数据库 select database();
+select database();
+
+# 创建数据库 create database test [charset UTF8] []内可选编码格式
+create database test charset utf8;
+show databases;
+
+# 删除数据库 drop database 数据库名称
+drop database test;
+show databases;
+
+
+use world;
+# 查看表 show tables;
+show tables;
+
+# 创建表 create table 表名称(列名称 列类型,列名称 列类型,......)
+-- 列类型: 1.int 2.float 3.varchar(长度) 文本，长度为数字，做最大长度限制（py中的字符串） 4.date 日期类型 5.timesleep  时间戳类型
+create table student(
+    id int,
+    name varchar(10),
+    age int
+);
+
+# 删除表 drop table 表名称; drop table if exists 表名称;
+drop table student;
+```
