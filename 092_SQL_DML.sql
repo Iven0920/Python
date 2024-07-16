@@ -30,3 +30,13 @@ delete from student ;
 update student set name = 'Ivennn' where id = 4;
 # 不选where则全部更新
 update student set name = 'Ivennn';
+
+# 课后作业
+create table student_test(
+    id int,
+    name varchar(10),
+    age int,
+    gender varchar(10)
+);
+
+insert into student_test values(10001, 'Iven', 22, '男'), (10002, 'rosenn', 26, '男'), (10003, 'bob', 21, '女');

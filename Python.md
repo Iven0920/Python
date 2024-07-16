@@ -3226,11 +3226,11 @@ show tables; 查看数据库里有哪些表
 exit 退出MySQL的命令行环境
 图形化工具：DBeaver
 
-### SQL基础和数据定义DDL
-数据定义：DDL
-数据操纵：DML
-数据控制：DCL
-数据查询：DQL
+### SQL基础和数据定义语言DDL
+**数据定义**：DDL
+**数据操纵**：DML
+**数据控制**：DCL
+**数据查询**：DQL
 
 
 ```sql
@@ -3278,7 +3278,7 @@ create table student(
 drop table student;
 ```
 
-### 数据操纵DML
+### 数据操纵语言DML
 ```sql
 use world;
 
@@ -3322,4 +3322,94 @@ create table student_test(
 );
 
 insert into student_test values(10001, 'Iven', 22, '男'), (10002, 'rosenn', 26, '男'), (10003, 'bob', 21, '女');
+```
+
+### 数据查询语言DQL_基础查询
+```sql
+create table student(
+    id int,
+    name varchar(10),
+    age int,
+    gender varchar(10)
+);
+
+INSERT INTO student VALUES(10001, '周杰轮', 31, '男'), (10002, '王力鸿', 33, '男'), (10003, '蔡依琳', 35, '女'), (10004, '林志灵', 36, '女'), (10005, '刘德滑', 33, '男'), (10006, '张大山', 10, '男'), (10007, '刘志龙', 11, '男'), (10008, '王潇潇', 33, '女'), (10009, '张一梅', 20, '女'), (10010, '王一倩', 13, '女'), (10011, '陈一迅', 31, '男'), (10012, '张晓光', 33, '男'), (10013, '李大晓', 15, '男'), (10014, '吕甜甜', 36, '女'), (10015, '曾悦悦', 31, '女'), (10016, '刘佳慧', 21, '女'), (10017, '项羽凡', 23, '男'), (10018, '刘德强', 26, '男'), (10019, '王强强', 11, '男'), (10020, '林志慧', 25, '女');
+
+# select 字段列表 |* from 表 [where 条件判断]
+# 从表中，选择某些列进行展示
+select id, name from student;
+select id, name, age, gender from student;
+# * 代表查询所有
+select * from student;
+select * from student where age > 20;
+select * from student where gender = '男';
+```
+
+### 数据查询语言DQL_分组聚合
+```sql
+# 分组聚合
+# select 字段|聚合函数 from 表 [where 条件] group by 列
+# 聚合函数：sum(列), avg(列), min(列), max(列), count(列|*)
+# select后非聚合函数只能有跟group by一样的对象 聚合函数无限制
+select gender, avg(age), sum(age), min(age), max(age), count(*) from student group by gender;
+```
+
+### 数据查询语言DQL_排序分页
+```sql
+# 结果排序 对某一列进行排序
+# select 列|聚合函数|* from 表 order by ...[asc| desc]默认升序
+select * from student where age > 20;
+select * from student where age > 20 order by age asc;
+select * from student where age > 20 order by age desc;
+
+# 结果分页限制
+# select 列|聚合函数|* from 表 limit n[, m]
+select * from student limit 5;
+# 跳过前10条从第11条开始 取5个
+select * from student limit 10, 5;
+
+# 综合使用 执行顺序不可变 select from必写 其他可省略
+# select 列|聚合函数|* from 表 where... group by... order by ...[asc| desc] limit n[, m]...
+select age, count(*) from student where age > 20 group by age;
+select age, count(*) from student where age > 20 group by age 
+order by age;
+select age, count(*) from student where age > 20 group by age 
+order by age limit 3;
+```
+
+### Python操作MySQL
+```python
+# pymysql 除了使用图形化工具 也可以用编程语言执行SQL来操作数据库
+
+# todo 创建到MySQL的数据库链接
+from pymysql import Connection
+conn = Connection(
+    host = "localhost",         # 主机名(IP)
+    port = 3306,                # 端口
+    user = "root",              # 账户
+    password = "lgz65653420"    # 密码
+)
+# 获取服务器连接信息
+print(conn.get_server_info())
+
+# todo 创建到MySQL的数据库链接
+# 获取游标对象 conn.cursor()
+cursor = conn.cursor()
+# 选择数据库 use = select_db
+conn.select_db("test")
+# 执行SQL 用python语言可以不写;
+cursor.execute("create table test_pymysql(id int);")
+cursor.execute("create table test_pymysql2(id int)")
+
+# todo 执行查询性质的SQL语句
+conn.select_db("world")
+cursor.execute("select * from student")
+# 拿到查询结果 fetchall() 返回了一个嵌套元组
+results = cursor.fetchall()
+print(results)
+for r in results:
+    print(r)
+
+# todo 关闭链接
+conn.close()
 ```
