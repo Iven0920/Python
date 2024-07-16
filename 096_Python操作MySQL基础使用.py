@@ -6,7 +6,7 @@ conn = Connection(
     host = "localhost",         # 主机名(IP)
     port = 3306,                # 端口
     user = "root",              # 账户
-    password = "lgz65653420"    # 密码
+    password = "123456"         # 密码
 )
 # 获取服务器连接信息
 print(conn.get_server_info())

@@ -13,7 +13,7 @@ select * from student limit 10, 5;
 # 综合使用 执行顺序不可变 select from必写 其他可省略
 # select 列|聚合函数|* from 表 where... group by... order by ...[asc| desc] limit n[, m]...
 select age, count(*) from student where age > 20 group by age;
-select age, count(*) from student where age > 20 group by age 
+select age, count(*) from student where age > 20 group by age;
 order by age;
-select age, count(*) from student where age > 20 group by age 
+select age, count(*) from student where age > 20 group by age;
 order by age limit 3;
