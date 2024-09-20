@@ -3596,8 +3596,12 @@ for data in results:
 f.flush()
 f.close()
 conn.close()
+<<<<<<< HEAD
 ```
 
 ### 第十五章
 spark是全球顶级的分布式计算框架，用于对海量数据进行大规模分布式计算，支持众多的编程语言开发，是大数据开发的核心技术。
 作为python库进行数据处理或提交到spark集群进行分布式集群计算
+=======
+```
+>>>>>>> 413bffa5158137e3dd90a0d5cd5cc4cb10050bd6
